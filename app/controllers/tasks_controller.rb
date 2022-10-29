@@ -16,7 +16,7 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to tasks_path, notice: "タスクを登録しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 
@@ -37,7 +37,7 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     @task.destroy
-    redirect_to tasks_path
+    redirect_to tasks_path, notice: "タスクを削除しました"
   end
 
   private
