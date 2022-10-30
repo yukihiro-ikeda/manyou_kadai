@@ -1,9 +1,22 @@
-|usersテーブル  |         |         |                 |          |       |
-|----------------|---------|---------|-----------------|----------|-------|
-| user_id        | name    | email   | password_digest
-|                |         |         |                 |          |       |
-| tasksテーブル  |         |         |                 |          |       |
-| task_id        | user_id | name    | detail          | priority | limit |
-|                |         |         |                 |          |       |
-| labelsテーブル |         |         |                 |          |       |
-| label_id       | user_id | task_id |			
+| User            |            |
+|-----------------|------------|
+| カラム          | データ型   |
+| user_id         | string     |
+| name            | string     |
+| email           | string     |
+| password_digest | string     |
+|                 |            |
+| Task            |            |
+| カラム          | データ型   |
+| task_id         | string     |
+| user_id         | references |
+| name            | string     |
+| detail          | string     |
+| priority        | integer    |
+| limit           | date       |
+|                 |            |
+| Label           |            |
+| カラム          | データ型   |
+| label_id        | string     |
+| user_id         | references |
+| task_id         | references |
