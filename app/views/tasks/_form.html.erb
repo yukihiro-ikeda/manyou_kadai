@@ -11,11 +11,17 @@
     </div>
   <% end %>
 
-  <%= form.label :"タスク名" %>
+  <%= form.label :"タスク名" %><br>
   <%= form.text_field :name %><br>
-  <%= form.label :"詳細" %>
-  <%= form.text_area :detail %>
-  <%= form.submit '登録する' %>
+
+  <%= form.label :"詳細" %><br>
+  <%= form.text_area :detail %><br>
+
+  <%= form.label :"終了期限" %><br>
+  <%= form.date_field :expired_at %><br>      
+
+  <%= form.submit '登録する' %><br>
+
 <% end %>
 
 <%= link_to'タスク一覧', tasks_path %>
