@@ -18,7 +18,10 @@
   <%= form.text_area :detail %><br>
 
   <%= form.label :"終了期限" %><br>
-  <%= form.date_field :expired_at %><br>      
+  <%= form.date_field :expired_at %><br> 
+  
+  <%= form.label :"ステータス" %><br>
+  <%= form.select :status, ["未着手","着手中","完了"], include_blank: "選択して下さい" %><br>
 
   <%= form.submit '登録する' %><br>
 
