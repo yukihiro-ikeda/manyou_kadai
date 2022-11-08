@@ -14,6 +14,7 @@
     <td>詳細:<%= task.detail %></td>
     <td>終了期限:<%= task.expired_at %></td>
     <td>ステータス:<%= task.status %></td>
+    <td>優先度:<%= task.priority %></td>
     <td><%= link_to '詳細', task_path(task.id) %></td>
     <td><%= link_to '編集', edit_task_path(task.id) %></td>
     <td><%= link_to '削除', task_path(task.id), method: :delete, data: {confirm: '本当に削除しますか?'} %></td>
@@ -22,6 +23,6 @@
 </table>
 
 
-
+<%= link_to "優先順位でソートする", tasks_path(sort_priority: "true") %>
 <%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>
 <%= link_to '新規タスク', new_task_path %>
