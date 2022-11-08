@@ -1,10 +1,12 @@
 <h1>タスク一覧</h1>
 <%= form_with(scope: :task, url: tasks_path, method: :get, local: true) do |form| %>
-  <%= form.label :'タスク名検索' %>
+  <%= form.label :'あいまいタスク名検索' %>
   <%= form.text_field :name %>
   <%= form.submit 'Search' %>
-    
+  <%= form.select(:status, [["未着手",0],["着手中",1],["完了",2]],include_blank:'選択してください') %>
 <% end %>
+
+
 <table>
 <% @tasks.each do |task| %>
   <tr>

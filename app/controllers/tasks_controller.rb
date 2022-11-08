@@ -5,9 +5,23 @@ class TasksController < ApplicationController
     else
       @tasks = Task.all
     end
-    #params[:search]を#params[:task]に変えたら機能した！
-    if params[:task].present?
-      @tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%")
+    
+    if params[:task].present? 
+      if params[:task][:name].present? && params[:task][:status].present?
+      @tasks = Task.where(status: params[:task][:status]).where('name LIKE ?', "%#{params[:task][:name]}%")
+    #params[:search]を#params[:task]に変更して機能した
+      elsif params[:task][:name].present?
+        @tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%")
+      elsif params[:task][:status].present?
+        @tasks = Task.where(status: params[:task][:status])
+        # binding.irb
+      end
+    end
+    
+    
+    if params[:status].present?
+      @tasks = Task.where(status: params[:status])
+      # binding.irb
     end
     # @tasks = @tasks.where('title LIKE ?', "%#{params[:search]}%") if params[:search].present?
   end
@@ -55,6 +69,6 @@ class TasksController < ApplicationController
 
   private
   def params_valid
-    params.require(:task).permit(:name, :detail, :expired_at, :status　)
+    params.require(:task).permit(:name, :detail, :expired_at, :status )
   end
 end
