@@ -27,6 +27,7 @@ class TasksController < ApplicationController
         @tasks = @tasks.all.page(params[:page]).per(5)
         # binding.irb
       end
+      @tasks = @tasks.page(params[:page]).per(10)
     end
     
     if params[:status].present?
