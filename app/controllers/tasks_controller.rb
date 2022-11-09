@@ -1,12 +1,14 @@
 class TasksController < ApplicationController
   def index
-    
+    @tasks = Task.all.order(created_at: "DESC").page(params[:page]).per(5)
+
     if params[:sort_expired]
       @tasks = Task.all.order(expired_at: "DESC")
       @tasks = @tasks.all.page(params[:page]).per(5)
-    else
-      @tasks = Task.all
-      @tasks = @tasks.all.page(params[:page]).per(5)
+    # else
+    #   # p "ここを通過"
+    #   @tasks = Task.all
+    #   @tasks = @tasks.all.page(params[:page]).per(5)
     end
 
     if params[:sort_priority]
@@ -16,25 +18,25 @@ class TasksController < ApplicationController
 
     if params[:task].present? 
       if params[:task][:name].present? && params[:task][:status].present?
-      @tasks = Task.where(status: params[:task][:status]).where('name LIKE ?', "%#{params[:task][:name]}%")
+      @tasks = Task.task_name(params[:task][:name]).status_name(params[:task][:status])
       @tasks = @tasks.all.page(params[:page]).per(5)
     #params[:search]を#params[:task]に変更して機能した
       elsif params[:task][:name].present?
-        @tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%")
+        @tasks = Task.task_name(params[:task][:name])
         @tasks = @tasks.all.page(params[:page]).per(5)
       elsif params[:task][:status].present?
-        @tasks = Task.where(status: params[:task][:status])
+        @tasks = Task.status_name(params[:task][:status])
         @tasks = @tasks.all.page(params[:page]).per(5)
         # binding.irb
       end
       @tasks = @tasks.page(params[:page]).per(10)
     end
     
-    if params[:status].present?
-      @tasks = Task.where(status: params[:status])
-      @tasks = @tasks.all.page(params[:page]).per(5)
-      # binding.irb
-    end
+    # if params[:status].present?
+    #   @tasks = Task.status_name(params[:status][:name])
+    #   @tasks = @tasks.all.page(params[:page]).per(5)
+    #   # binding.irb
+    # end
     # @tasks = @tasks.where('title LIKE ?', "%#{params[:search]}%") if params[:search].present?
   end
 
@@ -54,7 +56,6 @@ class TasksController < ApplicationController
       render :new
     end
   end
-
 
   def edit
     @task = Task.find(params[:id])
