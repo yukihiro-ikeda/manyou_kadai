@@ -7,7 +7,7 @@
 <% end %>
 
 
-<table>
+<table class="table table-striped">
 <% @tasks.each do |task| %>
   <tr>
     <td class="task_list" >タスク名:<%= task.name %></td>
@@ -15,9 +15,9 @@
     <td>終了期限:<%= task.expired_at %></td>
     <td>ステータス:<%= task.status %></td>
     <td>優先度:<%= task.priority %></td>
-    <td><%= link_to '詳細', task_path(task.id) %></td>
-    <td><%= link_to '編集', edit_task_path(task.id) %></td>
-    <td><%= link_to '削除', task_path(task.id), method: :delete, data: {confirm: '本当に削除しますか?'} %></td>
+    <td><%= link_to '詳細', task_path(task.id) , class:"btn btn-success" %></td>
+    <td><%= link_to '編集', edit_task_path(task.id) , class:"btn btn-dark" %></td>
+    <td><%= link_to '削除', task_path(task.id), class:"btn btn-primary" ,method: :delete, data: {confirm: '本当に削除しますか?'} %></td>
   </tr>
 <% end %>
 </table>
