@@ -1,15 +1,29 @@
 <h1>タスク一覧</h1>
-<table>
+<%= form_with(scope: :task, url: tasks_path, method: :get, local: true) do |form| %>
+  <%= form.label :'あいまいタスク名検索' %>
+  <%= form.text_field :name %>
+  <%= form.submit 'Search' %>
+  <%= form.select(:status, [["未着手",0],["着手中",1],["完了",2]],include_blank:'選択してください') %>
+<% end %>
+
+
+<table class="table table-striped">
 <% @tasks.each do |task| %>
   <tr>
     <td class="task_list" >タスク名:<%= task.name %></td>
     <td>詳細:<%= task.detail %></td>
-    <td><%= link_to '詳細', task_path(task.id) %></td>
-    <td><%= link_to '編集', edit_task_path(task.id) %></td>
-    <td><%= link_to '削除', task_path(task.id), method: :delete, data: {confirm: '本当に削除しますか?'} %></td>
+    <td>終了期限:<%= task.expired_at %></td>
+    <td>ステータス:<%= task.status %></td>
+    <td>優先度:<%= task.priority %></td>
+    <td><%= link_to '詳細', task_path(task.id) , class:"btn btn-success" %></td>
+    <td><%= link_to '編集', edit_task_path(task.id) , class:"btn btn-dark" %></td>
+    <td><%= link_to '削除', task_path(task.id), class:"btn btn-primary" ,method: :delete, data: {confirm: '本当に削除しますか?'} %></td>
   </tr>
 <% end %>
 </table>
 
-<%= t('view.sample') %>
+
+<%= link_to "優先順位でソートする", tasks_path(sort_priority: "true") %>
+<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>
 <%= link_to '新規タスク', new_task_path %>
+<%= paginate @tasks %>
