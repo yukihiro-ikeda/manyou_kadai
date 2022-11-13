@@ -50,6 +50,7 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(params_valid)
+    @task.user_id = current_user.id
     if @task.save
       redirect_to tasks_path, notice: "タスクを登録しました"
     else
