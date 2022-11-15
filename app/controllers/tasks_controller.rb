@@ -3,11 +3,12 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
   before_action :check_user, only: %i[show edit update destroy]
   def index
-    
-    @tasks = current_user.tasks.all.includes(:user).order(created_at: "DESC").page(params[:page]).per(5)
+    @tasks = current_user.tasks.page(params[:page]).per(5)
+    # @tasks = current_user.tasks.order(created_at: "DESC").page(params[:page]).per(5)
 
     if params[:sort_expired]
-      @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
+      @tasks = @tasks.order(expired_at: "DESC")
+      # @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
       # binding.irb
       @tasks = @tasks.all.page(params[:page]).per(5)
     # else
@@ -17,20 +18,22 @@ class TasksController < ApplicationController
     end
 
     if params[:sort_priority]
-      @tasks = current_user.tasks.all.includes(:user).order(priority: :asc)
+      @tasks = @tasks.order(priority: :asc)
       @tasks = @tasks.all.page(params[:page]).per(5)
     end
 
     if params[:task].present? 
       if params[:task][:name].present? && params[:task][:status].present?
-      @tasks = Task.task_name(params[:task][:name]).status_name(params[:task][:status])
-      @tasks = @tasks.all.page(params[:page]).per(5)
-    #params[:search]を#params[:task]に変更して機能した
+        # @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
+        @tasks = @tasks.task_name(params[:task][:name]).status_name(params[:task][:status])
+        @tasks = @tasks.all.page(params[:page]).per(5)
       elsif params[:task][:name].present?
-        @tasks = Task.task_name(params[:task][:name])
+        # @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
+        @tasks = @tasks.task_name(params[:task][:name])
         @tasks = @tasks.all.page(params[:page]).per(5)
       elsif params[:task][:status].present?
-        @tasks = Task.status_name(params[:task][:status])
+        # current_user.tasks.all.includes(:user).order(expired_at: "DESC")
+        @tasks = @tasks.status_name(params[:task][:status])
         @tasks = @tasks.all.page(params[:page]).per(5)
         # binding.irb
       end
