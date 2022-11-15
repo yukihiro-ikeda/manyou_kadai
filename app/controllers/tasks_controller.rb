@@ -1,9 +1,14 @@
 class TasksController < ApplicationController
+  # skip_before_action :login_required, only: [:new, :create]
+  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :check_user, only: %i[show edit update destroy]
   def index
-    @tasks = Task.all.order(created_at: "DESC").page(params[:page]).per(5)
+    
+    @tasks = current_user.tasks.all.includes(:user).order(created_at: "DESC").page(params[:page]).per(5)
 
     if params[:sort_expired]
-      @tasks = Task.all.order(expired_at: "DESC")
+      @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
+      # binding.irb
       @tasks = @tasks.all.page(params[:page]).per(5)
     # else
     #   # p "ここを通過"
@@ -12,7 +17,7 @@ class TasksController < ApplicationController
     end
 
     if params[:sort_priority]
-      @tasks = Task.all.order(priority: :asc)
+      @tasks = current_user.tasks.all.includes(:user).order(priority: :asc)
       @tasks = @tasks.all.page(params[:page]).per(5)
     end
 
@@ -82,7 +87,19 @@ class TasksController < ApplicationController
   # end
 
   private
+  
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
   def params_valid
     params.require(:task).permit(:name, :detail, :expired_at, :status, :priority )
   end
+
+  def check_user
+    @task = Task.find(params[:id])
+    if current_user.id != @task.user_id
+      redirect_to tasks_path, notice: 'アクセスできません'
+    end
+end
 end
