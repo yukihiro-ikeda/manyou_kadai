@@ -1,5 +1,8 @@
 class Admin::UsersController < ApplicationController
   before_action :admin_user
+  skip_before_action :admin_user, only: [:update]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+
   def new
     @user = User.new
   end
@@ -27,12 +30,9 @@ class Admin::UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    if @user.update(admin_user_params)
-      flash[:notice] = "ユーザを編集しました"
-      redirect_to admin_users_path
+    if @user.update(user_params)
+      redirect_to admin_users_path, notice: "ユーザを編集しました"
     else
-      flash[:danger] = "更新できませんでした"
       render :edit
     end
   end
@@ -45,14 +45,19 @@ class Admin::UsersController < ApplicationController
   end
 
   private
-  def admin_user_params
+
+  def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
   end
 
   def admin_user
-    unless current_user.admin?
+    unless current_user.admin == true
       flash[:danger] = "管理者以外アクセスできません"
       redirect_to tasks_path 
     end
-  end  
+  end
+  
+  def set_user
+    @user = User.find(params[:id])
+  end
 end
