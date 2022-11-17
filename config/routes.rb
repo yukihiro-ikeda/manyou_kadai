@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   end
 
   get 'sessions/new'
-  # root 'tasks#index'
+  root 'sessions/new'
   resources :tasks
   resources :users, only: [:new, :create, :show]
   resources :sessions, only: [:new, :create, :destroy]
