@@ -2,15 +2,18 @@ class TasksController < ApplicationController
   # skip_before_action :login_required, only: [:new, :create]
   before_action :set_task, only: %i[ show edit update destroy ]
   before_action :check_user, only: %i[show edit update destroy]
+
   def index
-    @tasks = current_user.tasks.page(params[:page]).per(5)
+    # @tasks = current_user.tasks.page(params[:page]).per(5)
     # @tasks = current_user.tasks.order(created_at: "DESC").page(params[:page]).per(5)
+    @tasks = current_user.tasks
 
     if params[:sort_expired]
       @tasks = @tasks.order(expired_at: "DESC")
+      # binding.irb
       # @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
       # binding.irb
-      @tasks = @tasks.all.page(params[:page]).per(5)
+      # @tasks = @tasks.all.page(params[:page]).per(5)
     # else
     #   # p "ここを通過"
     #   @tasks = Task.all
@@ -19,27 +22,27 @@ class TasksController < ApplicationController
 
     if params[:sort_priority]
       @tasks = @tasks.order(priority: :asc)
-      @tasks = @tasks.all.page(params[:page]).per(5)
+      # @tasks = @tasks.all.page(params[:page]).per(5)
     end
 
     if params[:task].present? 
       if params[:task][:name].present? && params[:task][:status].present?
         # @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
         @tasks = @tasks.task_name(params[:task][:name]).status_name(params[:task][:status])
-        @tasks = @tasks.all.page(params[:page]).per(5)
+        # @tasks = @tasks.all.page(params[:page]).per(5)
       elsif params[:task][:name].present?
         # @tasks = current_user.tasks.all.includes(:user).order(expired_at: "DESC")
         @tasks = @tasks.task_name(params[:task][:name])
-        @tasks = @tasks.all.page(params[:page]).per(5)
+        # @tasks = @tasks.all.page(params[:page]).per(5)
       elsif params[:task][:status].present?
         # current_user.tasks.all.includes(:user).order(expired_at: "DESC")
         @tasks = @tasks.status_name(params[:task][:status])
-        @tasks = @tasks.all.page(params[:page]).per(5)
+        # @tasks = @tasks.all.page(params[:page]).per(5)
         # binding.irb
       end
-      @tasks = @tasks.page(params[:page]).per(10)
+      # @tasks = @tasks.page(params[:page]).per(5)
     end
-    
+    @tasks = @tasks.order(created_at: "DESC").page(params[:page]).per(5)
     # if params[:status].present?
     #   @tasks = Task.status_name(params[:status][:name])
     #   @tasks = @tasks.all.page(params[:page]).per(5)
