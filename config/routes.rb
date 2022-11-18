@@ -4,8 +4,8 @@ Rails.application.routes.draw do
     resources :users
   end
 
-  get 'sessions/new'
-  root 'sessions/new'
+  # get 'sessions/new'
+  root 'sessions#new'
   resources :tasks
   resources :users, only: [:new, :create, :show]
   resources :sessions, only: [:new, :create, :destroy]
