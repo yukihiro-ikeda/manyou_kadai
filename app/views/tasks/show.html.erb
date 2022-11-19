@@ -1,11 +1,36 @@
 <h1>ブログ詳細</h1>
+
 <p>
 <strong>タスク名:</strong>
 <%= @task.name %>
 </p>
+
 <p>
 <strong>詳細:</strong>
 <%= @task.detail %>
 </p>
+
+<p>
+  <strong>終了期限:</strong>
+  <%= @task.expired_at %>
+</p>
+
+<p>
+  <strong>ステータス:</strong>
+  <%= @task.status %>
+</p>
+
+<p>
+  <strong>優先度:</strong>
+  <%= @task.priority %>
+</p>
+
+<p>
+  <strong>ラベル名:</strong>
+  <% @task.labels.each do |label| %>
+    <%=label.name%>
+  <% end %>
+</p>
+
 
 <%= link_to 'Back', tasks_path %>

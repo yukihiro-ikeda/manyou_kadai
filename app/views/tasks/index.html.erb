@@ -4,6 +4,14 @@
   <%= form.text_field :name %>
   <%= form.submit 'Search' %>
   <%= form.select(:status, [["未着手",0],["着手中",1],["完了",2]],include_blank:'選択してください') %>
+  <%= select_tag :label_id,
+                      options_from_collection_for_select(Label.all, :id, :name, params[:label_id]),
+                      {
+                        prompt: 'タグで絞り込み',
+                        onchange: 'submit(this.form);'
+                      } 
+      %>
+  
 <% end %>
 
 
@@ -19,9 +27,15 @@
     <td><%= link_to '詳細', task_path(task.id) , class:"btn btn-success" %></td>
     <td><%= link_to '編集', edit_task_path(task.id) , class:"btn btn-dark" %></td>
     <td><%= link_to '削除', task_path(task.id), class:"btn btn-primary" ,method: :delete, data: {confirm: '本当に削除しますか?'} %></td>
+    <td>
+    <% task.labels.each do |label| %>
+      <%= label.name %>
+    <% end %>
   </tr>
 <% end %>
+
 </table>
+
 
 
 <%= link_to "優先順位でソートする", tasks_path(sort_priority: "true") %>
