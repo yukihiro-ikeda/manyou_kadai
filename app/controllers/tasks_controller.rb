@@ -39,6 +39,8 @@ class TasksController < ApplicationController
         @tasks = @tasks.status_name(params[:task][:status])
         # @tasks = @tasks.all.page(params[:page]).per(5)
         # binding.irb
+      elsif params[:label_id].present?
+        @tasks = Label.find(params[:label_id]).tasks.page(params[:page]).per(5)
       end
       # @tasks = @tasks.page(params[:page]).per(5)
     end
@@ -99,7 +101,7 @@ class TasksController < ApplicationController
   end
 
   def params_valid
-    params.require(:task).permit(:name, :detail, :expired_at, :status, :priority )
+    params.require(:task).permit(:name, :detail, :expired_at, :status, :priority, { label_ids: [] } )
   end
 
   def check_user
@@ -107,5 +109,6 @@ class TasksController < ApplicationController
     if current_user.id != @task.user_id
       redirect_to tasks_path, notice: 'アクセスできません'
     end
-end
+  end
+  
 end
