@@ -22,7 +22,7 @@ User.all.each do |user|
 end
 
 User.all.each do |user|
-  Task.create!(user_id: user.id, name: "test14", detail: "test14", status: "完成", priority: "高", expired_at: "002022/11/24")
+  Task.create!(user_id: user.id, name: "test14", detail: "test14", status: "完了", priority: "高", expired_at: "002022/11/24")
 end
 
 User.all.each do |user|
@@ -34,7 +34,7 @@ User.all.each do |user|
 end
 
 User.all.each do |user|
-  Task.create!(user_id: user.id, name: "test17", detail: "test17", status: "完成", priority: "低", expired_at: "002022/11/27")
+  Task.create!(user_id: user.id, name: "test17", detail: "test17", status: "完了", priority: "低", expired_at: "002022/11/27")
 end
 
 User.all.each do |user|
